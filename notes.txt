@@ -1,0 +1,12 @@
+function Gameboard
+    this will detect key presses and change the display accordingly
+    this will also keep track of Xs and Os in an array
+    this will also reset the board after a game
+
+function Player
+    this will save a player's choice whether X or O
+    this will keep track of a player's score
+    
+function GameEngine
+    this will determine if a win condition exists
+    this will also make moves as a computer
