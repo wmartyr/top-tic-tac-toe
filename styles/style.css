@@ -46,8 +46,6 @@ main {
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
     background-color: var(--color-lines);
-    /* width: 470px;
-    height: 470px; */
 }
 
 .tile {
