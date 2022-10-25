@@ -57,6 +57,7 @@ main {
     width: 150px;
     height: 150px;
     background-color: var(--color-main);
+    font-size: 5rem;
 }
 
 .score-column-o {
