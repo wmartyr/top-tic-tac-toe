@@ -15,23 +15,30 @@ body {
 }
 
 main {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows:  80vh 1fr;
     gap: 20px;
     height: 100vh;
 }
 
 .scores {
-    flex: 1;
     text-align: center;
+    margin: auto;
 }
 
 .score-column-x {
+    grid-column: 1;
     color: var(--color-x);
 }
 
-.scores p {
+button {
+    border: none;
+    padding: 1rem;
+    margin: 0;
+    cursor: pointer;
+    text-align: center;
+    background-color: var(--color-main);
     font-size: 5rem;
 }
 
@@ -40,12 +47,16 @@ main {
 }
 
 .board {
-    flex: 0;
+    grid-column: 2;
+    grid-row: 1 / 2;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 10px;
     background-color: var(--color-lines);
+    width: 470px;
+    height: 470px;
+    margin: auto;
 }
 
 .tile {
@@ -60,6 +71,19 @@ main {
     font-size: 5rem;
 }
 
+.restart {
+    grid-column: 2;
+    grid-row: 2 / 3;
+    align-self: start;
+    font-size: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .score-column-o {
+    color: var(--color-o);
+}
+
+.score-column-o button {
     color: var(--color-o);
 }
