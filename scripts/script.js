@@ -9,8 +9,10 @@ const gameboard = (() => {
         const buttons = document.querySelectorAll(".tile");
         buttons.forEach((button) => {
             button.addEventListener("click", () => {
-                gameArray[button.id] = playerToken;
-                updateTile(playerToken, button);
+                if (gameArray[button.id] === 0) {
+                    gameArray[button.id] = playerToken;
+                    updateTile(playerToken, button);
+                }
             });
         });
     };
