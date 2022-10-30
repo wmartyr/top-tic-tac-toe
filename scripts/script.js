@@ -1,6 +1,7 @@
 const gameboard = (() => {
     var gameStarted = false;
     const gameArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    var turn = "player";
 
     const gameStart = () => {
         var playerChoice = player1.chooseToken();
@@ -13,58 +14,43 @@ const gameboard = (() => {
                 } else {
                     alert(`You chose ${playerChoice}`);
                     gameStarted = true;
-                    clicked(playerChoice);
+                    clicked();
                 };
             } else {
                 boardReset();
+                gameStarted = false;
             };
         });
     };
 
-    const choosePlayer = () => {
-        // const playerChoice = "x";
-        // const playerTokens = document.querySelectorAll(".player-token");
-
-        // playerTokens.forEach((playerToken) => {
-        //     playerToken.addEventListener("click", () => {
-        //         playerChoice = playerToken.id;
-        //         // gameboard.gameStart(playerChoice);
-        //         // return playerToken.id;
-        //         alert(playerChoice);
-        //     });
-        // });
-    };
-
-    const clicked = (playerChoice) => {
+    const clicked = () => {
+        alert("clicked");
         const buttons = document.querySelectorAll(".tile");
         buttons.forEach((button) => {
+            // button.addEventListener("click", updateGame(button));
             button.addEventListener("click", () => {
+                const playerChoice = player1.getToken();
                 if (gameArray[button.id - 1] === 0) {
                     gameArray[button.id - 1] = playerChoice;
-                    updateTile(playerChoice, button);
+                    button.textContent = playerChoice;
                 }
             });
         });
     };
 
-    const updateTile = (player, button) => {
-        if (player === "o") {
-            button.textContent = "O";
-        } else {
-            button.textContent = "X";
-        }
-    };
-
     const boardReset = () => {
-        alert("Board reset");
         gameArray.forEach((element, index) => {
             gameArray[index] = 0;
         });
+
         const buttons = document.querySelectorAll(".tile");
         buttons.forEach((button) => {
             button.textContent = "";
         });
+
         player1.resetToken();
+        // TODO 
+        // remove event listener for clicked()
     };
 
     return {
@@ -103,7 +89,9 @@ const Player = (() => {
     };
 
     const resetToken = () => {
+        alert("Reset token");
         playerChoice = null;
+        playerScore = 0;
     }
 
     return {
