@@ -27,10 +27,9 @@ const gameboard = (() => {
         alert("clicked");
         const buttons = document.querySelectorAll(".tile");
         buttons.forEach((button) => {
-            // button.addEventListener("click", updateGame(button));
             button.addEventListener("click", () => {
                 const playerChoice = player1.getToken();
-                if (gameArray[button.id - 1] === 0) {
+                if (gameArray[button.id - 1] === 0 && gameStarted) {
                     gameArray[button.id - 1] = playerChoice;
                     button.textContent = playerChoice;
                 }
@@ -47,10 +46,7 @@ const gameboard = (() => {
         buttons.forEach((button) => {
             button.textContent = "";
         });
-
         player1.resetToken();
-        // TODO 
-        // remove event listener for clicked()
     };
 
     return {
@@ -68,9 +64,6 @@ const Player = (() => {
         playerTokens.forEach((playerToken) => {
             playerToken.addEventListener("click", () => {
                 playerChoice = playerToken.id;
-                // gameboard.gameStart(playerChoice);
-                // return playerToken.id;
-                // alert(playerChoice);
             });
         });
 
