@@ -32,7 +32,9 @@ const gameboard = (() => {
                 if (gameArray[button.id - 1] === 0 && gameStarted) {
                     gameArray[button.id - 1] = playerChoice;
                     button.textContent = playerChoice;
-                }
+                };
+                setTimeout(() => { checkWin(); }, 100);
+                // checkWin();
             });
         });
     };
@@ -47,6 +49,23 @@ const gameboard = (() => {
             button.textContent = "";
         });
         player1.resetToken();
+    };
+
+    const checkWin = () => {
+        const win1 = gameArray.slice(0, 3).join("");
+        const win2 = gameArray.slice(3, 6).join("");
+        const win3 = gameArray.slice(6).join("");
+        const win4 = gameArray[0]+gameArray[3]+gameArray[6];
+        const win5 = gameArray[1]+gameArray[4]+gameArray[7];
+        const win6 = gameArray[2]+gameArray[5]+gameArray[8];
+        const win7 = gameArray[0]+gameArray[4]+gameArray[8];
+        const win8 = gameArray[2]+gameArray[4]+gameArray[6];
+        if ( win1 === "XXX" || win2 === "XXX" || win3 === "XXX" || win4 === "XXX" || win5 === "XXX" || win6 === "XXX" || win7 === "XXX" || win8 === "XXX") {
+            alert("X wins!");
+        }
+        if ( win1 === "OOO" || win2 === "OOO" || win3 === "OOO" || win4 === "OOO" || win5 === "OOO" || win6 === "OOO" || win7 === "OOO" || win8 === "OOO") {
+            alert("O wins!");
+        }
     };
 
     return {
@@ -98,6 +117,4 @@ const Player = (() => {
 });
 
 const player1 = Player();
-// alert(player1.token());
-// gameboard.gameStart(player1.token());
 gameboard.gameStart();
