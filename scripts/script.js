@@ -18,6 +18,8 @@ const gameboard = (() => {
                 };
             } else {
                 boardReset();
+                player1.resetToken();
+                player1.resetScore();
                 gameStarted = false;
             };
         });
@@ -52,7 +54,6 @@ const gameboard = (() => {
         buttons.forEach((button) => {
             button.textContent = "";
         });
-        player1.resetToken();
     };
 
     const checkWin = () => {
@@ -118,6 +119,10 @@ const Player = (() => {
     const resetToken = () => {
         alert("Reset token");
         playerChoice = null;
+    }
+
+    const resetScore = () => {
+        alert("Reset score");
         playerScore = 0;
     }
 
@@ -127,6 +132,7 @@ const Player = (() => {
         addScore,
         getToken,
         resetToken,
+        resetScore,
     };
 
 });
