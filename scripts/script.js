@@ -24,7 +24,7 @@ const gameboard = (() => {
     };
 
     const clicked = () => {
-        // alert("clicked");
+        var winner = 0;
         const buttons = document.querySelectorAll(".tile");
         buttons.forEach((button) => {
             button.addEventListener("click", () => {
@@ -33,7 +33,12 @@ const gameboard = (() => {
                     gameArray[button.id - 1] = playerChoice;
                     button.textContent = playerChoice;
                 };
-                setTimeout(() => { checkWin(); }, 100);
+                setTimeout(() => {
+                    winner = checkWin();
+                    if (winner !== 0) {
+                        alert(`${winner} wins game`);
+                    };
+                }, 10);
             });
         });
     };
@@ -54,27 +59,28 @@ const gameboard = (() => {
         const win1 = gameArray.slice(0, 3).join("");
         const win2 = gameArray.slice(3, 6).join("");
         const win3 = gameArray.slice(6).join("");
-        const win4 = gameArray[0]+gameArray[3]+gameArray[6];
-        const win5 = gameArray[1]+gameArray[4]+gameArray[7];
-        const win6 = gameArray[2]+gameArray[5]+gameArray[8];
-        const win7 = gameArray[0]+gameArray[4]+gameArray[8];
-        const win8 = gameArray[2]+gameArray[4]+gameArray[6];
+        const win4 = gameArray[0] + gameArray[3] + gameArray[6];
+        const win5 = gameArray[1] + gameArray[4] + gameArray[7];
+        const win6 = gameArray[2] + gameArray[5] + gameArray[8];
+        const win7 = gameArray[0] + gameArray[4] + gameArray[8];
+        const win8 = gameArray[2] + gameArray[4] + gameArray[6];
         const playerChoice = player1.getToken();
 
-        if ( win1 === "XXX" || win2 === "XXX" || win3 === "XXX" || win4 === "XXX" || win5 === "XXX" || win6 === "XXX" || win7 === "XXX" || win8 === "XXX") {
-            alert("X wins!");
+        if (win1 === "XXX" || win2 === "XXX" || win3 === "XXX" || win4 === "XXX" || win5 === "XXX" || win6 === "XXX" || win7 === "XXX" || win8 === "XXX") {
             if (playerChoice === "X") {
                 player1.addScore();
-                alert(player1.getScore());
+                // alert(player1.getScore());
+                return "X";
             }
         }
-        if ( win1 === "OOO" || win2 === "OOO" || win3 === "OOO" || win4 === "OOO" || win5 === "OOO" || win6 === "OOO" || win7 === "OOO" || win8 === "OOO") {
-            alert("O wins!");
+        if (win1 === "OOO" || win2 === "OOO" || win3 === "OOO" || win4 === "OOO" || win5 === "OOO" || win6 === "OOO" || win7 === "OOO" || win8 === "OOO") {
             if (playerChoice === "O") {
                 player1.addScore();
-                alert(player1.getScore());
+                // alert(player1.getScore());
+                return "O";
             }
         }
+        return 0;
     };
 
     return {
