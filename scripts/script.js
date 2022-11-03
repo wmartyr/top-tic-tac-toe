@@ -12,7 +12,7 @@ const gameboard = (() => {
                 if (playerChoice === null) {
                     alert("Please make a choice");
                 } else {
-                    alert(`You chose ${playerChoice}`);
+                    // alert(`You chose ${playerChoice}`);
                     gameStarted = true;
                     clicked();
                 };
@@ -24,7 +24,7 @@ const gameboard = (() => {
     };
 
     const clicked = () => {
-        alert("clicked");
+        // alert("clicked");
         const buttons = document.querySelectorAll(".tile");
         buttons.forEach((button) => {
             button.addEventListener("click", () => {
@@ -34,7 +34,6 @@ const gameboard = (() => {
                     button.textContent = playerChoice;
                 };
                 setTimeout(() => { checkWin(); }, 100);
-                // checkWin();
             });
         });
     };
@@ -60,11 +59,21 @@ const gameboard = (() => {
         const win6 = gameArray[2]+gameArray[5]+gameArray[8];
         const win7 = gameArray[0]+gameArray[4]+gameArray[8];
         const win8 = gameArray[2]+gameArray[4]+gameArray[6];
+        const playerChoice = player1.getToken();
+
         if ( win1 === "XXX" || win2 === "XXX" || win3 === "XXX" || win4 === "XXX" || win5 === "XXX" || win6 === "XXX" || win7 === "XXX" || win8 === "XXX") {
             alert("X wins!");
+            if (playerChoice === "X") {
+                player1.addScore();
+                alert(player1.getScore());
+            }
         }
         if ( win1 === "OOO" || win2 === "OOO" || win3 === "OOO" || win4 === "OOO" || win5 === "OOO" || win6 === "OOO" || win7 === "OOO" || win8 === "OOO") {
             alert("O wins!");
+            if (playerChoice === "O") {
+                player1.addScore();
+                alert(player1.getScore());
+            }
         }
     };
 

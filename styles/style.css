@@ -1,5 +1,5 @@
 * {
-    outline: dashed 1px gray;
+    /* outline: dashed 1px gray; */
 }
 
 :root {
@@ -84,6 +84,9 @@ button {
     margin-right: auto;
 }
 
+.main-button:hover {
+    background-color: var(--color-lines);
+}
 .score-column-o {
     color: var(--color-o);
 }
