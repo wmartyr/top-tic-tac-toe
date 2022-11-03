@@ -39,6 +39,8 @@ const gameboard = (() => {
                     winner = checkWin();
                     if (winner !== 0) {
                         alert(`${winner} wins game`);
+                        boardReset();
+                        updateScore();
                     };
                 }, 10);
             });
@@ -83,6 +85,19 @@ const gameboard = (() => {
         }
         return 0;
     };
+
+    function updateScore() {
+        const playerChoice = player1.getToken();
+        const scoreX = document.querySelector("#score-x");
+        const scoreO = document.querySelector("#score-o");
+
+        if  (playerChoice === "X") {
+            scoreX.textContent = player1.getScore();
+        } else {
+            scoreO.textContent = player1.getScore();
+        }
+
+    }
 
     return {
         gameStart,
