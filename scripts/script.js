@@ -20,6 +20,7 @@ const gameboard = (() => {
                 boardReset();
                 player1.resetToken();
                 player1.resetScore();
+                updateScore(null);
                 gameStarted = false;
             };
         });
@@ -40,7 +41,7 @@ const gameboard = (() => {
                     if (winner !== 0) {
                         alert(`${winner} wins game`);
                         boardReset();
-                        updateScore();
+                        updateScore(playerChoice);
                     };
                 }, 10);
             });
@@ -72,7 +73,6 @@ const gameboard = (() => {
         if (win1 === "XXX" || win2 === "XXX" || win3 === "XXX" || win4 === "XXX" || win5 === "XXX" || win6 === "XXX" || win7 === "XXX" || win8 === "XXX") {
             if (playerChoice === "X") {
                 player1.addScore();
-                // alert(player1.getScore());
                 return "X";
             }
         }
@@ -86,15 +86,14 @@ const gameboard = (() => {
         return 0;
     };
 
-    function updateScore() {
-        const playerChoice = player1.getToken();
-        const scoreX = document.querySelector("#score-x");
-        const scoreO = document.querySelector("#score-o");
-
-        if  (playerChoice === "X") {
-            scoreX.textContent = player1.getScore();
+    function updateScore(playerChoice) {
+        if (playerChoice === "X") {
+            document.querySelector("#score-x").textContent = player1.getScore();
+        } else if (playerChoice === "O") {
+            document.querySelector("#score-o").textContent = player1.getScore();
         } else {
-            scoreO.textContent = player1.getScore();
+            document.querySelector("#score-x").textContent = player1.getScore();
+            document.querySelector("#score-o").textContent = player1.getScore();
         }
 
     }
