@@ -1,10 +1,15 @@
 const gameboard = (() => {
     var gameStarted = false;
     const gameArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    var turn = "player";
+    var turn = "player1";
 
     const gameStart = () => {
         var playerChoice = player1.chooseToken();
+        if (playerChoice === "X") {
+            player2.setToken("O");
+        } else {
+            player2.setToken("X");
+        }
         const mainButton = document.querySelector(".main-button");
         mainButton.addEventListener("click", () => {
             if (!gameStarted) {
@@ -20,7 +25,7 @@ const gameboard = (() => {
                 boardReset();
                 player1.resetToken();
                 player1.resetScore();
-                updateScore(null);
+                updateScoreboard(null);
                 gameStarted = false;
             };
         });
@@ -41,7 +46,7 @@ const gameboard = (() => {
                     if (winner !== 0) {
                         alert(`${winner} wins game`);
                         boardReset();
-                        updateScore(playerChoice);
+                        updateScoreboard(playerChoice);
                     };
                 }, 10);
             });
@@ -68,7 +73,6 @@ const gameboard = (() => {
         const win6 = gameArray[2] + gameArray[5] + gameArray[8];
         const win7 = gameArray[0] + gameArray[4] + gameArray[8];
         const win8 = gameArray[2] + gameArray[4] + gameArray[6];
-        // const playerChoice = player1.getToken();
 
         if ((win1 === "XXX" || win2 === "XXX" || win3 === "XXX" || win4 === "XXX" || win5 === "XXX" || win6 === "XXX" || win7 === "XXX" || win8 === "XXX") && (playerChoice === "X")) {
             player1.addScore();
@@ -81,7 +85,7 @@ const gameboard = (() => {
         return 0;
     };
 
-    function updateScore(playerChoice) {
+    const updateScoreboard = (playerChoice) => {
         if (playerChoice === "X") {
             document.querySelector("#score-x").textContent = player1.getScore();
         } else if (playerChoice === "O") {
@@ -90,7 +94,14 @@ const gameboard = (() => {
             document.querySelector("#score-x").textContent = player1.getScore();
             document.querySelector("#score-o").textContent = player1.getScore();
         }
+    }
 
+    const randomAvailableTile = () => {
+        var randInt;
+        do {
+            randInt = Math.floor(Math.random() * 9);
+        } while (gameArray[randInt] !== 0)
+        return randInt;
     }
 
     return {
@@ -125,6 +136,10 @@ const Player = (() => {
         return playerChoice;
     };
 
+    const setToken = (token) => {
+        playerChoice = token;
+    }
+
     const resetToken = () => {
         alert("Reset token");
         playerChoice = null;
@@ -140,6 +155,7 @@ const Player = (() => {
         getScore,
         addScore,
         getToken,
+        setToken,
         resetToken,
         resetScore,
     };
@@ -147,4 +163,5 @@ const Player = (() => {
 });
 
 const player1 = Player();
+const player2 = Player();
 gameboard.gameStart();
