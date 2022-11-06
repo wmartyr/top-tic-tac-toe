@@ -9,6 +9,7 @@ const gameboard = (() => {
             player2.setToken("O");
         } else {
             player2.setToken("X");
+            turn = "player2";
         }
         const mainButton = document.querySelector(".main-button");
         mainButton.addEventListener("click", () => {
@@ -17,7 +18,8 @@ const gameboard = (() => {
                 if (playerChoice === null) {
                     alert("Please make a choice");
                 } else {
-                    // alert(`You chose ${playerChoice}`);
+                    alert(`You chose ${playerChoice}`);
+                    turn = initialTurn(playerChoice);
                     gameStarted = true;
                     clicked();
                 };
@@ -94,7 +96,7 @@ const gameboard = (() => {
             document.querySelector("#score-x").textContent = player1.getScore();
             document.querySelector("#score-o").textContent = player1.getScore();
         }
-    }
+    };
 
     const randomAvailableTile = () => {
         var randInt;
@@ -102,7 +104,17 @@ const gameboard = (() => {
             randInt = Math.floor(Math.random() * 9);
         } while (gameArray[randInt] !== 0)
         return randInt;
-    }
+    };
+
+    const initialTurn = (playerChoice) => {
+        if (playerChoice === "X") {
+            player2.setToken("O");
+            return "player1";
+        } else {
+            player2.setToken("X");
+            return "player2";
+        }
+    };
 
     return {
         gameStart,
