@@ -25,8 +25,8 @@ const gameboard = (() => {
                 };
             } else {
                 boardReset();
-                player1.resetToken();
-                player1.resetScore();
+                player1.reset();
+                player2.reset();
                 updateScoreboard(null);
                 gameStarted = false;
             };
@@ -97,8 +97,8 @@ const gameboard = (() => {
         } else if (playerChoice === "O") {
             document.querySelector("#score-o").textContent = player1.getScore();
         } else {
-            document.querySelector("#score-x").textContent = player1.getScore();
-            document.querySelector("#score-o").textContent = player1.getScore();
+            document.querySelector("#score-x").textContent = "0";
+            document.querySelector("#score-o").textContent = "0";
         }
     };
 
@@ -158,13 +158,8 @@ const Player = (() => {
         playerChoice = token;
     }
 
-    const resetToken = () => {
-        alert("Reset token");
+    const reset = () => {
         playerChoice = null;
-    }
-
-    const resetScore = () => {
-        alert("Reset score");
         playerScore = 0;
     }
 
@@ -174,8 +169,7 @@ const Player = (() => {
         addScore,
         getToken,
         setToken,
-        resetToken,
-        resetScore,
+        reset,
     };
 
 });
