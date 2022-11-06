@@ -51,9 +51,8 @@ const gameboard = (() => {
             button.addEventListener("click", () => {
                 const playerChoice = player1.getToken();
                 // check if button has been clicked and update if not
-                // TODO - remove the -1 after changing IDs in html
-                if (gameArray[button.id - 1] === 0 && gameStarted) {
-                    gameArray[button.id - 1] = playerChoice;
+                if (gameArray[button.id] === 0 && gameStarted) {
+                    gameArray[button.id] = playerChoice;
                     button.textContent = playerChoice;
                 };
                 setTimeout(() => {
