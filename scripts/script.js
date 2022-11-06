@@ -33,6 +33,7 @@ const gameboard = (() => {
         });
     };
 
+    // check when the tiles are clicked
     const clicked = () => {
         var winner = 0;
         const buttons = document.querySelectorAll(".tile");
@@ -55,6 +56,7 @@ const gameboard = (() => {
         });
     };
 
+    // reset the game array and clear the board display
     const boardReset = () => {
         gameArray.forEach((element, index) => {
             gameArray[index] = 0;
@@ -66,6 +68,7 @@ const gameboard = (() => {
         });
     };
 
+    // check if a win condition exists
     const checkWin = (playerChoice) => {
         const win1 = gameArray.slice(0, 3).join("");
         const win2 = gameArray.slice(3, 6).join("");
@@ -87,6 +90,7 @@ const gameboard = (() => {
         return 0;
     };
 
+    // update the score display
     const updateScoreboard = (playerChoice) => {
         if (playerChoice === "X") {
             document.querySelector("#score-x").textContent = player1.getScore();
@@ -98,6 +102,7 @@ const gameboard = (() => {
         }
     };
 
+    // generate a random number for the computer move
     const randomAvailableTile = () => {
         var randInt;
         do {
@@ -106,6 +111,7 @@ const gameboard = (() => {
         return randInt;
     };
 
+    // since X always starts, return which player is X
     const initialTurn = (playerChoice) => {
         if (playerChoice === "X") {
             player2.setToken("O");
