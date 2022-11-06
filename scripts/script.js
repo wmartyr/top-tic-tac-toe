@@ -2,6 +2,7 @@ const gameboard = (() => {
     var gameStarted = false;
     const gameArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     var turn = "player1";
+    var turnCount = 0;
 
     const gameStart = () => {
         var playerChoice = player1.chooseToken();
@@ -21,6 +22,14 @@ const gameboard = (() => {
                     alert(`You chose ${playerChoice}`);
                     turn = initialTurn(playerChoice);
                     gameStarted = true;
+                    // while (turnCount < 9) {
+                    //     if (turn === "player2") {
+                    //         player2Move(playerChoice);
+                    //         turnCount++;
+                    //         turn = "player1";
+                    //     }
+                    //     clicked();
+                    // }
                     clicked();
                 };
             } else {
@@ -28,6 +37,7 @@ const gameboard = (() => {
                 player1.reset();
                 player2.reset();
                 updateScoreboard(null);
+                turnCount = 0;
                 gameStarted = false;
             };
         });
@@ -40,17 +50,27 @@ const gameboard = (() => {
         buttons.forEach((button) => {
             button.addEventListener("click", () => {
                 const playerChoice = player1.getToken();
+                // check if button has been clicked and update if not
+                // TODO - remove the -1 after changing IDs in html
                 if (gameArray[button.id - 1] === 0 && gameStarted) {
                     gameArray[button.id - 1] = playerChoice;
                     button.textContent = playerChoice;
                 };
                 setTimeout(() => {
-                    winner = checkWin(playerChoice);
-                    if (winner !== 0) {
-                        alert(`${winner} wins game`);
-                        boardReset();
-                        updateScoreboard(playerChoice);
-                    };
+                    if (turnCount < 9) {
+                        winner = checkWin(playerChoice);
+                        if (winner !== 0) {
+                            alert(`${winner} wins game`);
+                            boardReset();
+                            updateScoreboard(playerChoice);
+                            turnCount = 0;
+                        };
+                        turnCount++;
+                        turn = "player2";
+                    } else {
+                        alert("No winner");
+                        turnCount = 0
+                    }
                 }, 10);
             });
         });
@@ -121,6 +141,12 @@ const gameboard = (() => {
             return "player2";
         }
     };
+
+    // const player2Move = (playerChoice) => {
+    //     const tile = randomAvailableTile;
+    //     gameArray[tile] = playerChoice;
+    //     document.querySelector(`#${tile.toString()}`).textContent = playerChoice;
+    // };
 
     return {
         gameStart,
