@@ -1,35 +1,26 @@
 const gameboard = (() => {
     var gameStarted = false;
     const gameArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    var turn = "player1";
+    // var turn = "player1";
+    var startingPlayer = "player1";
     var turnCount = 0;
 
     const gameStart = () => {
-        var playerChoice = player1.chooseToken();
-        if (playerChoice === "X") {
-            player2.setToken("O");
-        } else {
-            player2.setToken("X");
-            turn = "player2";
-        }
+        player1.chooseToken();
         const mainButton = document.querySelector(".main-button");
         mainButton.addEventListener("click", () => {
             if (!gameStarted) {
-                playerChoice = player1.getToken();
-                if (playerChoice === null) {
+                player1Choice = player1.getToken();
+                // alert(player1Choice);
+                if (player1Choice === null) {
                     alert("Please make a choice");
                 } else {
-                    alert(`You chose ${playerChoice}`);
-                    turn = initialTurn(playerChoice);
+                    alert(`You chose ${player1Choice}`);
+                    startingPlayer = initialTurn(player1Choice);
                     gameStarted = true;
-                    // while (turnCount < 9) {
-                    //     if (turn === "player2") {
-                    //         player2Move(playerChoice);
-                    //         turnCount++;
-                    //         turn = "player1";
-                    //     }
-                    //     clicked();
-                    // }
+                    if (startingPlayer === "player2") {
+                        player2Move();
+                    }
                     clicked();
                 };
             } else {
@@ -45,35 +36,58 @@ const gameboard = (() => {
 
     // check when the tiles are clicked
     const clicked = () => {
+        const player2Choice = player2.getToken();
         var winner = 0;
         const buttons = document.querySelectorAll(".tile");
+
         buttons.forEach((button) => {
             button.addEventListener("click", () => {
-                const playerChoice = player1.getToken();
+                const player1Choice = player1.getToken();
+                const clickedTile = button.id.substring(4);
                 // check if button has been clicked and update if not
-                if (gameArray[button.id] === 0 && gameStarted) {
-                    gameArray[button.id] = playerChoice;
-                    button.textContent = playerChoice;
+                alert("turn: " + turnCount);
+                if (gameArray[clickedTile] === 0 && gameStarted) {
+                    gameArray[clickedTile] = player1Choice;
+                    button.textContent = player1Choice;
                 };
                 setTimeout(() => {
-                    if (turnCount < 9) {
-                        winner = checkWin(playerChoice);
-                        if (winner !== 0) {
-                            alert(`${winner} wins game`);
-                            boardReset();
-                            updateScoreboard(playerChoice);
-                            turnCount = 0;
-                        };
-                        turnCount++;
-                        turn = "player2";
+                    winner = checkWin(player1Choice);
+                    if (winner !== 0) {
+                        alert(`${winner} wins game`);
+                        boardReset();
+                        updateScoreboard(player1Choice);
+                        turnCount = 0;
+                        if (startingPlayer === "player2") {
+                            player2Move();
+                        }
                     } else {
-                        alert("No winner");
-                        turnCount = 0
-                    }
+                        turnCount++;
+                        if (turnCount === 9) {
+                            alert("No winner");
+                            boardReset();
+                            updateScoreboard(player1Choice);
+                            turnCount = 0
+                            if (startingPlayer === "player2") {
+                                player2Move();
+                            }
+                        }
+                        // turn = "player2";
+                        player2Move();
+                    };
                 }, 10);
             });
         });
     };
+
+    // function updateTile() {
+    //     const playerChoice = player1.getToken();
+    //     // check if button has been clicked and update if not
+    //     if (gameArray[button.id] === 0 && gameStarted) {
+    //         alert("Button clicked");
+    //         gameArray[button.id] = playerChoice;
+    //         button.textContent = playerChoice;
+    //     };
+    // }
 
     // reset the game array and clear the board display
     const boardReset = () => {
@@ -87,7 +101,7 @@ const gameboard = (() => {
         });
     };
 
-    // check if a win condition exists
+    // check if a win condition exists, adds to the player's score, and returns X, O, or 0
     const checkWin = (playerChoice) => {
         const win1 = gameArray.slice(0, 3).join("");
         const win2 = gameArray.slice(3, 6).join("");
@@ -109,7 +123,7 @@ const gameboard = (() => {
         return 0;
     };
 
-    // update the score display
+    // update the score display of the winner playerChoice
     const updateScoreboard = (playerChoice) => {
         if (playerChoice === "X") {
             document.querySelector("#score-x").textContent = player1.getScore();
@@ -121,7 +135,7 @@ const gameboard = (() => {
         }
     };
 
-    // generate a random number for the computer move
+    // generate a random number based on the available numbers for the computer move
     const randomAvailableTile = () => {
         var randInt;
         do {
@@ -141,16 +155,41 @@ const gameboard = (() => {
         }
     };
 
-    // const player2Move = (playerChoice) => {
-    //     const tile = randomAvailableTile;
-    //     gameArray[tile] = playerChoice;
-    //     document.querySelector(`#${tile.toString()}`).textContent = playerChoice;
-    // };
+    const player2Move = () => {
+        alert("player 2 moves");
+        const player2Choice = player2.getToken();
+        const randomTile = randomAvailableTile();
+        const buttonId = "#tile" + randomTile.toString();
+        const tile = document.querySelector(buttonId);
+        gameArray[randomTile] = player2Choice;
+        tile.textContent = player2Choice; 
+        turnCount++;
+        winner = checkWin(player2Choice);
+        if (winner !== 0) {
+            alert(`${winner} wins game`);
+            boardReset();
+            updateScoreboard(player2Choice);
+            turnCount = 0;
+            if (startingPlayer === "player2") {
+                player2Move();
+            }
+        } else {
+            turnCount++;
+            if (turnCount === 9) {
+                alert("No winner");
+                boardReset();
+                updateScoreboard(player2Choice);
+                turnCount = 0
+                if (startingPlayer === "player2") {
+                    player2Move();
+                }
+            }
+        };
+    };
 
     return {
         gameStart,
     };
-
 })();
 
 const Player = (() => {
