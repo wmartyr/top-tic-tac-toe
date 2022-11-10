@@ -49,6 +49,7 @@ const gameboard = (() => {
                 if (gameArray[clickedTile] === 0 && gameStarted) {
                     gameArray[clickedTile] = player1Choice;
                     button.textContent = player1Choice;
+                    turnCount++;
                 };
                 setTimeout(() => {
                     winner = checkWin(player1Choice);
@@ -61,7 +62,6 @@ const gameboard = (() => {
                             player2Move();
                         }
                     } else {
-                        turnCount++;
                         if (turnCount === 9) {
                             alert("No winner");
                             boardReset();
@@ -117,7 +117,7 @@ const gameboard = (() => {
             return "X";
         }
         if ((win1 === "OOO" || win2 === "OOO" || win3 === "OOO" || win4 === "OOO" || win5 === "OOO" || win6 === "OOO" || win7 === "OOO" || win8 === "OOO") && (playerChoice === "O")) {
-            player1.addScore();
+            player2.addScore();
             return "O";
         }
         return 0;
@@ -128,7 +128,7 @@ const gameboard = (() => {
         if (playerChoice === "X") {
             document.querySelector("#score-x").textContent = player1.getScore();
         } else if (playerChoice === "O") {
-            document.querySelector("#score-o").textContent = player1.getScore();
+            document.querySelector("#score-o").textContent = player2.getScore();
         } else {
             document.querySelector("#score-x").textContent = "0";
             document.querySelector("#score-o").textContent = "0";
@@ -157,34 +157,36 @@ const gameboard = (() => {
 
     const player2Move = () => {
         alert("player 2 moves");
+        alert("turn count: " + turnCount);
         const player2Choice = player2.getToken();
         const randomTile = randomAvailableTile();
         const buttonId = "#tile" + randomTile.toString();
         const tile = document.querySelector(buttonId);
         gameArray[randomTile] = player2Choice;
-        tile.textContent = player2Choice; 
+        tile.textContent = player2Choice;
         turnCount++;
-        winner = checkWin(player2Choice);
-        if (winner !== 0) {
-            alert(`${winner} wins game`);
-            boardReset();
-            updateScoreboard(player2Choice);
-            turnCount = 0;
-            if (startingPlayer === "player2") {
-                player2Move();
-            }
-        } else {
-            turnCount++;
-            if (turnCount === 9) {
-                alert("No winner");
+        setTimeout(() => {
+            winner = checkWin(player2Choice);
+            if (winner !== 0) {
+                alert(`${winner} wins game`);
                 boardReset();
                 updateScoreboard(player2Choice);
-                turnCount = 0
+                turnCount = 0;
                 if (startingPlayer === "player2") {
                     player2Move();
                 }
-            }
-        };
+            } else {
+                if (turnCount === 9) {
+                    alert("No winner");
+                    boardReset();
+                    updateScoreboard(player2Choice);
+                    turnCount = 0
+                    if (startingPlayer === "player2") {
+                        player2Move();
+                    }
+                }
+            };
+        }, 10);
     };
 
     return {
@@ -241,3 +243,5 @@ const Player = (() => {
 const player1 = Player();
 const player2 = Player();
 gameboard.gameStart();
+
+// TODO fix game where if there is no winner, it will start with the original player who started.
