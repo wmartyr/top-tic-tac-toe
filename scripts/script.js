@@ -8,7 +8,7 @@ const gameboard = (() => {
     const gameStart = () => {
         player1.chooseToken();
         const mainButton = document.querySelector(".main-button");
-        mainButton.addEventListener("click", () => {
+        mainButton.addEventListener("mouseup", () => {
             if (!gameStarted) {
                 player1Choice = player1.getToken();
                 // alert(player1Choice);
@@ -41,11 +41,11 @@ const gameboard = (() => {
         const buttons = document.querySelectorAll(".tile");
 
         buttons.forEach((button) => {
-            button.addEventListener("click", () => {
+            button.addEventListener("mouseup", () => {
                 const player1Choice = player1.getToken();
                 const clickedTile = button.id.substring(4);
                 // check if button has been clicked and update if not
-                alert("turn: " + turnCount);
+                // alert("turn: " + turnCount);
                 if (gameArray[clickedTile] === 0 && gameStarted) {
                     gameArray[clickedTile] = player1Choice;
                     button.textContent = player1Choice;
@@ -78,16 +78,6 @@ const gameboard = (() => {
             });
         });
     };
-
-    // function updateTile() {
-    //     const playerChoice = player1.getToken();
-    //     // check if button has been clicked and update if not
-    //     if (gameArray[button.id] === 0 && gameStarted) {
-    //         alert("Button clicked");
-    //         gameArray[button.id] = playerChoice;
-    //         button.textContent = playerChoice;
-    //     };
-    // }
 
     // reset the game array and clear the board display
     const boardReset = () => {
@@ -156,8 +146,8 @@ const gameboard = (() => {
     };
 
     const player2Move = () => {
-        alert("player 2 moves");
-        alert("turn count: " + turnCount);
+        // alert("player 2 moves");
+        // alert("turn count: " + turnCount);
         const player2Choice = player2.getToken();
         const randomTile = randomAvailableTile();
         const buttonId = "#tile" + randomTile.toString();
@@ -179,8 +169,9 @@ const gameboard = (() => {
                 if (turnCount === 9) {
                     alert("No winner");
                     boardReset();
-                    updateScoreboard(player2Choice);
+                    // updateScoreboard(player2Choice);
                     turnCount = 0
+                    alert(startingPlayer);
                     if (startingPlayer === "player2") {
                         player2Move();
                     }
@@ -201,7 +192,7 @@ const Player = (() => {
 
     const chooseToken = () => {
         playerTokens.forEach((playerToken) => {
-            playerToken.addEventListener("click", () => {
+            playerToken.addEventListener("mouseup", () => {
                 playerChoice = playerToken.id;
             });
         });
