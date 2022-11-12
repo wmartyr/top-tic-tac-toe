@@ -9,6 +9,7 @@ const gameboard = (() => {
 
     const gameStart = () => {
         const mainButton = document.querySelector(".main-button");
+        mainButton.textContent = "START";
         player1.chooseToken();
         clicked();
         mainButton.addEventListener("mouseup", () => {
@@ -18,10 +19,11 @@ const gameboard = (() => {
                     alert("Please make a choice");
                 } else {
                     alert(`You chose ${player1Choice}`);
-                    alert(`Player 2 is: ${player2Choice}`);
                     startingPlayer = initialTurn(player1Choice);
                     player2Choice = player2.getToken();
+                    alert(`Player 2 is: ${player2Choice}`);
                     gameStarted = true;
+                    mainButton.textContent = "RESTART";
                     if (startingPlayer === "player2") {
                         player2Move();
                     }
@@ -33,6 +35,7 @@ const gameboard = (() => {
                 updateScoreboard(null);
                 turnCount = 0;
                 gameStarted = false;
+                mainButton.textContent = "START";
             };
         });
     };
@@ -247,5 +250,3 @@ const Player = (() => {
 const player1 = Player();
 const player2 = Player();
 gameboard.gameStart();
-
-// TODO fix game where clicked runs again after a reset.
