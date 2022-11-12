@@ -1,27 +1,30 @@
 const gameboard = (() => {
-    var gameStarted = false;
-    const gameArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    // var turn = "player1";
-    var startingPlayer = "player1";
-    var turnCount = 0;
+    let gameStarted = false;
+    let gameArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let startingPlayer = "player1";
+    let turnCount = 0;
+    let player1Choice;
+    let player2Choice;
+    let winner = 0;
 
     const gameStart = () => {
-        player1.chooseToken();
         const mainButton = document.querySelector(".main-button");
+        player1.chooseToken();
+        clicked();
         mainButton.addEventListener("mouseup", () => {
             if (!gameStarted) {
                 player1Choice = player1.getToken();
-                // alert(player1Choice);
                 if (player1Choice === null) {
                     alert("Please make a choice");
                 } else {
                     alert(`You chose ${player1Choice}`);
+                    alert(`Player 2 is: ${player2Choice}`);
                     startingPlayer = initialTurn(player1Choice);
+                    player2Choice = player2.getToken();
                     gameStarted = true;
                     if (startingPlayer === "player2") {
                         player2Move();
                     }
-                    clicked();
                 };
             } else {
                 boardReset();
@@ -34,47 +37,54 @@ const gameboard = (() => {
         });
     };
 
+    const gameEngine = () => {
+        while (turnCount < 9) {
+            if (turn === "player2") {
+                player2Move();
+            }
+        }
+    };
+
     // check when the tiles are clicked
     const clicked = () => {
-        const player2Choice = player2.getToken();
-        var winner = 0;
+        winner = 0;
         const buttons = document.querySelectorAll(".tile");
 
         buttons.forEach((button) => {
             button.addEventListener("mouseup", () => {
-                const player1Choice = player1.getToken();
+                // const player1Choice = player1.getToken();
                 const clickedTile = button.id.substring(4);
                 // check if button has been clicked and update if not
-                // alert("turn: " + turnCount);
-                if (gameArray[clickedTile] === 0 && gameStarted) {
-                    gameArray[clickedTile] = player1Choice;
-                    button.textContent = player1Choice;
-                    turnCount++;
-                };
-                setTimeout(() => {
-                    winner = checkWin(player1Choice);
-                    if (winner !== 0) {
-                        alert(`${winner} wins game`);
-                        boardReset();
-                        updateScoreboard(player1Choice);
-                        turnCount = 0;
-                        if (startingPlayer === "player2") {
-                            player2Move();
-                        }
-                    } else {
-                        if (turnCount === 9) {
-                            alert("No winner");
+                if (gameStarted) {
+                    if (gameArray[clickedTile] === 0) {
+                        gameArray[clickedTile] = player1Choice;
+                        button.textContent = player1Choice;
+                        turnCount++;
+                    };
+                    setTimeout(() => {
+                        winner = checkWin(player1Choice);
+                        if (winner !== 0) {
+                            alert(`${winner} wins game`);
                             boardReset();
                             updateScoreboard(player1Choice);
-                            turnCount = 0
+                            turnCount = 0;
                             if (startingPlayer === "player2") {
                                 player2Move();
                             }
-                        }
-                        // turn = "player2";
-                        player2Move();
-                    };
-                }, 10);
+                        } else {
+                            if (turnCount === 9) {
+                                alert("No winner");
+                                boardReset();
+                                turnCount = 0;
+                                if (startingPlayer === "player2") {
+                                    player2Move();
+                                }
+                            } else {
+                                player2Move();
+                            }
+                        };
+                    }, 10);
+                }
             });
         });
     };
@@ -134,7 +144,7 @@ const gameboard = (() => {
         return randInt;
     };
 
-    // since X always starts, return which player is X
+    // since X always starts, return which player is X, and set the other player's token
     const initialTurn = (playerChoice) => {
         if (playerChoice === "X") {
             player2.setToken("O");
@@ -146,15 +156,13 @@ const gameboard = (() => {
     };
 
     const player2Move = () => {
-        // alert("player 2 moves");
-        // alert("turn count: " + turnCount);
-        const player2Choice = player2.getToken();
         const randomTile = randomAvailableTile();
         const buttonId = "#tile" + randomTile.toString();
         const tile = document.querySelector(buttonId);
         gameArray[randomTile] = player2Choice;
         tile.textContent = player2Choice;
         turnCount++;
+        turn = "player1";
         setTimeout(() => {
             winner = checkWin(player2Choice);
             if (winner !== 0) {
@@ -169,15 +177,21 @@ const gameboard = (() => {
                 if (turnCount === 9) {
                     alert("No winner");
                     boardReset();
-                    // updateScoreboard(player2Choice);
-                    turnCount = 0
-                    alert(startingPlayer);
+                    turnCount = 0;
                     if (startingPlayer === "player2") {
                         player2Move();
                     }
                 }
             };
         }, 10);
+    };
+
+    const setPlayer2 = (player1Choice) => {
+        if (player1Choice === "X") {
+            player2.setToken("O");
+        } else {
+            player2.setToken("X");
+        }
     };
 
     return {
@@ -196,7 +210,6 @@ const Player = (() => {
                 playerChoice = playerToken.id;
             });
         });
-
     }
 
     const getScore = () => {
@@ -235,4 +248,4 @@ const player1 = Player();
 const player2 = Player();
 gameboard.gameStart();
 
-// TODO fix game where if there is no winner, it will start with the original player who started.
+// TODO fix game where clicked runs again after a reset.
