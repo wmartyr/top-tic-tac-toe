@@ -18,10 +18,8 @@ const gameboard = (() => {
                 if (player1Choice === null) {
                     alert("Please make a choice");
                 } else {
-                    alert(`You chose ${player1Choice}`);
                     startingPlayer = initialTurn(player1Choice);
                     player2Choice = player2.getToken();
-                    alert(`Player 2 is: ${player2Choice}`);
                     gameStarted = true;
                     mainButton.textContent = "RESTART";
                     if (startingPlayer === "player2") {
@@ -150,6 +148,7 @@ const gameboard = (() => {
         }
     };
 
+    // player 2 random actions 
     const player2Move = () => {
         const randomTile = randomAvailableTile();
         const buttonId = "#tile" + randomTile.toString();
@@ -181,14 +180,6 @@ const gameboard = (() => {
         }, 10);
     };
 
-    const setPlayer2 = (player1Choice) => {
-        if (player1Choice === "X") {
-            player2.setToken("O");
-        } else {
-            player2.setToken("X");
-        }
-    };
-
     return {
         gameStart,
     };
@@ -198,10 +189,19 @@ const Player = (() => {
     var playerScore = 0;
     var playerChoice = null;
     const playerTokens = document.querySelectorAll(".player-token");
+    const xButton = document.querySelector("#X");
+    const oButton = document.querySelector("#O");
 
     const chooseToken = (gameStarted) => {
         playerTokens.forEach((playerToken) => {
             playerToken.addEventListener("mouseup", () => {
+                if (playerChoice !== null && playerChoice !== playerToken.id) {
+                    if (playerChoice === "X") {
+                        xButton.classList.remove("chosen-token");
+                    } else {
+                        oButton.classList.remove("chosen-token");
+                    }
+                }
                 playerChoice = playerToken.id;
                 if (!gameStarted) {
                     playerToken.classList.add("chosen-token");
@@ -247,3 +247,5 @@ const Player = (() => {
 const player1 = Player();
 const player2 = Player();
 gameboard.gameStart();
+
+//TODO fix bug where clicking on the other token after choosing one will also change appearance of that token. It should revert the first chosen token.
