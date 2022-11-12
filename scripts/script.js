@@ -10,7 +10,7 @@ const gameboard = (() => {
     const gameStart = () => {
         const mainButton = document.querySelector(".main-button");
         mainButton.textContent = "START";
-        player1.chooseToken();
+        player1.chooseToken(gameStarted);
         clicked();
         mainButton.addEventListener("mouseup", () => {
             if (!gameStarted) {
@@ -38,14 +38,6 @@ const gameboard = (() => {
                 mainButton.textContent = "START";
             };
         });
-    };
-
-    const gameEngine = () => {
-        while (turnCount < 9) {
-            if (turn === "player2") {
-                player2Move();
-            }
-        }
     };
 
     // check when the tiles are clicked
@@ -207,10 +199,13 @@ const Player = (() => {
     var playerChoice = null;
     const playerTokens = document.querySelectorAll(".player-token");
 
-    const chooseToken = () => {
+    const chooseToken = (gameStarted) => {
         playerTokens.forEach((playerToken) => {
             playerToken.addEventListener("mouseup", () => {
                 playerChoice = playerToken.id;
+                if (!gameStarted) {
+                    playerToken.classList.add("chosen-token");
+                }
             });
         });
     }
@@ -232,6 +227,8 @@ const Player = (() => {
     }
 
     const reset = () => {
+        const token = document.querySelector("#" + playerChoice);
+        token.classList.remove("chosen-token");
         playerChoice = null;
         playerScore = 0;
     }
