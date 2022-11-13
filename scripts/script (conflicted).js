@@ -16,7 +16,7 @@ const gameboard = (() => {
             if (!gameStarted) {
                 player1Choice = player1.getToken();
                 if (player1Choice === null) {
-                    popUp("Please choose a token");
+                    alert("Please make a choice");
                 } else {
                     startingPlayer = initialTurn(player1Choice);
                     player2Choice = player2.getToken();
@@ -57,10 +57,8 @@ const gameboard = (() => {
                     setTimeout(() => {
                         winner = checkWin(player1Choice);
                         if (winner !== 0) {
-                            popUp(`${winner} wins game`);
-                            setTimeout(() => {
-                                boardReset();
-                            }, 1500);
+                            alert(`${winner} wins game`);
+                            boardReset();
                             updateScoreboard(player1Choice);
                             turnCount = 0;
                             if (startingPlayer === "player2") {
@@ -68,10 +66,8 @@ const gameboard = (() => {
                             }
                         } else {
                             if (turnCount === 9) {
-                                popUp("Draw");
-                                setTimeout(() => {
-                                    boardReset();
-                                }, 1500);
+                                alert("No winner");
+                                boardReset();
                                 turnCount = 0;
                                 if (startingPlayer === "player2") {
                                     player2Move();
@@ -160,14 +156,12 @@ const gameboard = (() => {
         gameArray[randomTile] = player2Choice;
         tile.textContent = player2Choice;
         turnCount++;
-        // turn = "player1";
+        turn = "player1";
         setTimeout(() => {
             winner = checkWin(player2Choice);
             if (winner !== 0) {
-                popUp(`${winner} wins game`);
-                setTimeout(() => {
-                    boardReset();
-                }, 1500);
+                alert(`${winner} wins game`);
+                boardReset();
                 updateScoreboard(player2Choice);
                 turnCount = 0;
                 if (startingPlayer === "player2") {
@@ -175,10 +169,8 @@ const gameboard = (() => {
                 }
             } else {
                 if (turnCount === 9) {
-                    popUp("Draw");
-                    setTimeout(() => {
-                        boardReset();
-                    }, 1500);
+                    alert("No winner");
+                    boardReset();
                     turnCount = 0;
                     if (startingPlayer === "player2") {
                         player2Move();
@@ -189,13 +181,10 @@ const gameboard = (() => {
     };
 
     const popUp = (message) => {
-        const modal = document.querySelector(".modal-background");
+        const modal = document.
         const messageLine = document.querySelector("#message-line");
-        modal.style.display = "block";
+
         messageLine.textContent = message;
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 1500);
     };
 
     return {
