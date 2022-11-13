@@ -57,25 +57,10 @@ const gameboard = (() => {
                     setTimeout(() => {
                         winner = checkWin(player1Choice);
                         if (winner !== 0) {
-                            popUp(`${winner} wins game`);
-                            setTimeout(() => {
-                                boardReset();
-                                updateScoreboard(player1Choice);
-                                turnCount = 0;
-                                if (startingPlayer === "player2") {
-                                    player2Move();
-                                }
-                            }, 1500);
+                            winAction(winner, player1Choice);
                         } else {
                             if (turnCount === 9) {
-                                popUp("Draw");
-                                setTimeout(() => {
-                                    boardReset();
-                                }, 1500);
-                                turnCount = 0;
-                                if (startingPlayer === "player2") {
-                                    player2Move();
-                                }
+                                drawAction();
                             } else {
                                 player2Move();
                             }
@@ -120,6 +105,29 @@ const gameboard = (() => {
         return 0;
     };
 
+    const winAction = (winner, playerChoice) => {
+        popUp(`${winner} wins game`);
+        setTimeout(() => {
+            boardReset();
+            updateScoreboard(playerChoice);
+            turnCount = 0;
+            if (startingPlayer === "player2") {
+                player2Move();
+            }
+        }, 1500);
+    };
+
+    const drawAction = () => {
+        popUp("Draw");
+        setTimeout(() => {
+            boardReset();
+            turnCount = 0;
+            if (startingPlayer === "player2") {
+                player2Move();
+            }
+        }, 1500);
+    };
+
     // update the score display of the winner playerChoice
     const updateScoreboard = (playerChoice) => {
         if (playerChoice === "X") {
@@ -160,29 +168,13 @@ const gameboard = (() => {
         gameArray[randomTile] = player2Choice;
         tile.textContent = player2Choice;
         turnCount++;
-        // turn = "player1";
         setTimeout(() => {
             winner = checkWin(player2Choice);
             if (winner !== 0) {
-                popUp(`${winner} wins game`);
-                setTimeout(() => {
-                    boardReset();
-                }, 1500);
-                updateScoreboard(player2Choice);
-                turnCount = 0;
-                if (startingPlayer === "player2") {
-                    player2Move();
-                }
+                winAction(winner, player2Choice);
             } else {
                 if (turnCount === 9) {
-                    popUp("Draw");
-                    setTimeout(() => {
-                        boardReset();
-                    }, 1500);
-                    turnCount = 0;
-                    if (startingPlayer === "player2") {
-                        player2Move();
-                    }
+                    drawAction();
                 }
             };
         }, 10);
