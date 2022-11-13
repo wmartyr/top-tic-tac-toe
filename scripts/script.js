@@ -105,6 +105,7 @@ const gameboard = (() => {
         return 0;
     };
 
+    // things to do after a win
     const winAction = (winner, playerChoice) => {
         popUp(`${winner} wins game`);
         setTimeout(() => {
@@ -117,6 +118,7 @@ const gameboard = (() => {
         }, 1500);
     };
 
+    // things to do after a draw
     const drawAction = () => {
         popUp("Draw");
         setTimeout(() => {
@@ -180,6 +182,7 @@ const gameboard = (() => {
         }, 10);
     };
 
+    // function to make dialog modal boxes
     const popUp = (message) => {
         const modal = document.querySelector(".modal-background");
         const messageLine = document.querySelector("#message-line");
