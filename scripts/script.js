@@ -9,7 +9,7 @@ const gameboard = (() => {
 
     const gameStart = () => {
         const mainButton = document.querySelector(".main-button");
-        mainButton.textContent = "START";
+        mainButton.textContent = "CHOOSE TOKEN";
         player1.chooseToken(gameStarted);
         clicked();
         mainButton.addEventListener("mouseup", () => {
@@ -33,7 +33,7 @@ const gameboard = (() => {
                 updateScoreboard(null);
                 turnCount = 0;
                 gameStarted = false;
-                mainButton.textContent = "START";
+                mainButton.textContent = "CHOOSE TOKEN";
             };
         });
     };
@@ -60,12 +60,12 @@ const gameboard = (() => {
                             popUp(`${winner} wins game`);
                             setTimeout(() => {
                                 boardReset();
+                                updateScoreboard(player1Choice);
+                                turnCount = 0;
+                                if (startingPlayer === "player2") {
+                                    player2Move();
+                                }
                             }, 1500);
-                            updateScoreboard(player1Choice);
-                            turnCount = 0;
-                            if (startingPlayer === "player2") {
-                                player2Move();
-                            }
                         } else {
                             if (turnCount === 9) {
                                 popUp("Draw");
@@ -209,6 +209,7 @@ const Player = (() => {
     const playerTokens = document.querySelectorAll(".player-token");
     const xButton = document.querySelector("#X");
     const oButton = document.querySelector("#O");
+    const mainButton = document.querySelector(".main-button");
 
     const chooseToken = (gameStarted) => {
         playerTokens.forEach((playerToken) => {
@@ -224,6 +225,7 @@ const Player = (() => {
                 if (!gameStarted) {
                     playerToken.classList.add("chosen-token");
                 }
+                mainButton.textContent = "START";
             });
         });
     }
@@ -265,5 +267,3 @@ const Player = (() => {
 const player1 = Player();
 const player2 = Player();
 gameboard.gameStart();
-
-//TODO Create pop up dialogs.
