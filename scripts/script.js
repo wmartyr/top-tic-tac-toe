@@ -45,7 +45,6 @@ const gameboard = (() => {
 
         buttons.forEach((button) => {
             button.addEventListener("mouseup", () => {
-                // const player1Choice = player1.getToken();
                 const clickedTile = button.id.substring(4);
                 // check if button has been clicked and update if not
                 if (gameStarted) {
